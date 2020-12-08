@@ -348,10 +348,19 @@ export interface ISpecificationValueModel {
   value: {};
 }
 
+export enum ReturnType {
+  EntitySummary           = 1 << 0,
+  FieldsSummary           = 1 << 1,
+  FieldValues             = 1 << 2,
+  SpecificationSummary    = 1 << 3,
+  SpecificationValues     = 1 << 4,
+  Media                   = 1 << 5,
+  MediaDetails            = 1 << 6
+}
+
 export interface IFetchObjectsModel {
   entityIds: number[];
-  objects: "EntitySummary" | "FieldsSummary" | "FieldValues" |
-  "SpecificationSummary" | "SpecificationValues" | "Media" | "MediaDetails";
+  objects: string | ReturnType;
   fieldTypeIds?: string;
   inbound?: IFetchLinkObjectsModel;
   outbound?: IFetchLinkObjectsModel;

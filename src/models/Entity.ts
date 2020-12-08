@@ -19,7 +19,8 @@ import {
   ISegments,
   IBase64FileModel,
   IUrlFileModel,
-  IExternalUrlFileModel
+  IExternalUrlFileModel,
+  ReturnType
 } from "../types";
 
 import { AxiosPromise } from "axios";
@@ -30,6 +31,19 @@ export default class Entity {
     this.request = request;
   }
 
+  private GetReturnType(type: ReturnType): string {
+    const objects: string[] = [];
+    while (type) {
+      const bit = type & (~type + 1);
+      var value = ReturnType[bit];
+      if (!objects.includes(value)) {
+        objects.push(value);
+      }
+      type ^= bit;
+    }
+    return objects.join(',');
+  }
+
   /**
    * Returns various types of entity data.
    * Fetch data for a list of entity id's and specify what data to include.
@@ -37,6 +51,11 @@ export default class Entity {
    * @param entityCreationModel :Entity Creation Model.
    */
   public FetchData(fetchObjectsModel: IFetchObjectsModel): AxiosPromise<ISummaryModel[]> {
+
+    let returnType = fetchObjectsModel.objects;
+    if (typeof returnType != 'string') {
+      fetchObjectsModel.objects = this.GetReturnType(returnType);
+    }
     return this.request.getInstance().post(`entities:fetchdata`, fetchObjectsModel);
   }
 
@@ -127,7 +146,7 @@ export default class Entity {
    */
   public UpdateSpecificationValue(entityTypeId: string, specificationFieldValue: ISpecificationValueModel)
     : AxiosPromise<ISpecificationValueModel[]> {
-    return this.request.getInstance().post(`entities/${entityTypeId}/specificationvalues`, specificationFieldValue);
+    return this.request.getInstance().put(`entities/${entityTypeId}/specificationvalues`, specificationFieldValue);
   }
 
   /**
@@ -148,7 +167,7 @@ export default class Entity {
    * @param fieldValueModels : (optional) filter types using comma separated list.
    */
   public SetFieldValues(entityId: number, fieldValueModels: IFieldValueModel[]): AxiosPromise<IFieldValueModel> {
-    return this.request.getInstance().post(`entities/${entityId}/fieldvalues`, fieldValueModels);
+    return this.request.getInstance().put(`entities/${entityId}/fieldvalues`, fieldValueModels);
   }
 
   /**
@@ -254,6 +273,36 @@ export default class Entity {
   }
 
   /**
+   * Add media to an entity using base64
+   * @param entityId : The unique identifier of the entity.
+   * @param base64FileModel : file name and Data
+   */
+  public AddMediaBase64(entityId: number, base64FileModel: IBase64FileModel): AxiosPromise<IMediaInfoModel[]> {
+    const requestUrl = `entities/${entityId}/media:uploadbase64`;
+    return this.request.getInstance().post(requestUrl, base64FileModel);
+  }
+
+  /**
+   * Add media to an entity using URL
+   * @param entityId : The unique identifier of the entity.
+   * @param urlFileModel : file name and Data
+   */
+  public AddMediaFromUrl(entityId: number, urlFileModel: IUrlFileModel): AxiosPromise<IMediaInfoModel[]> {
+    const requestUrl = `entities/${entityId}/media:uploadfromurl`;
+    return this.request.getInstance().post(requestUrl, urlFileModel);
+  }
+
+  /**
+   * Add media to an entity using external URL
+   * @param entityId : The unique identifier of the entity.
+   * @param externalUrlFileModel : file name and Data
+   */
+  public AddMediaFromExternalUrl(entityId: number, externalUrlFileModel: IExternalUrlFileModel): AxiosPromise<IMediaInfoModel[]> {
+    const requestUrl = `entities/${entityId}/media:addexternalurl`;
+    return this.request.getInstance().post(requestUrl, externalUrlFileModel);
+  }
+
+  /**
    * Returns a read only list of entity comments
    * @param entityId : The unique identifier of the entity.
    */
@@ -305,35 +354,5 @@ export default class Entity {
   public GetAllSegements(): AxiosPromise<ISegments[]> {
     const requestUrl = `entities/segments`;
     return this.request.getInstance().get(requestUrl);
-  }
-
-  /**
-   * Add media to an entity using base64
-   * @param entityId : The unique identifier of the entity.
-   * @param base64FileModel : file name and Data
-   */
-  public AddMediaBase64(entityId: number, base64FileModel: IBase64FileModel): AxiosPromise<IMediaInfoModel[]> {
-    const requestUrl = `entities/${entityId}/media:uploadbase64`;
-    return this.request.getInstance().post(requestUrl, base64FileModel);
-  }
-
-  /**
-   * Add media to an entity using URL
-   * @param entityId : The unique identifier of the entity.
-   * @param urlFileModel : file name and Data
-   */
-  public AddMediaFromUrl(entityId: number, urlFileModel: IUrlFileModel): AxiosPromise<IMediaInfoModel[]> {
-    const requestUrl = `entities/${entityId}/media:uploadfromurl`;
-    return this.request.getInstance().post(requestUrl, urlFileModel);
-  }
-
-  /**
-   * Add media to an entity using external URL
-   * @param entityId : The unique identifier of the entity.
-   * @param externalUrlFileModel : file name and Data
-   */
-  public AddMediaFromExternalUrl(entityId: number, externalUrlFileModel: IExternalUrlFileModel): AxiosPromise<IMediaInfoModel[]> {
-    const requestUrl = `entities/${entityId}/media:addexternalurl`;
-    return this.request.getInstance().post(requestUrl, externalUrlFileModel);
   }
 }
