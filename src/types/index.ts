@@ -349,6 +349,7 @@ export interface ISpecificationValueModel {
 }
 
 export enum ReturnType {
+  /* tslint:disable:no-bitwise */
   EntitySummary           = 1 << 0,
   FieldsSummary           = 1 << 1,
   FieldValues             = 1 << 2,
@@ -356,6 +357,7 @@ export enum ReturnType {
   SpecificationValues     = 1 << 4,
   Media                   = 1 << 5,
   MediaDetails            = 1 << 6
+  /* tslint:enable:no-bitwise */
 }
 
 export interface IFetchObjectsModel {

@@ -31,19 +31,6 @@ export default class Entity {
     this.request = request;
   }
 
-  private GetReturnType(type: ReturnType): string {
-    const objects: string[] = [];
-    while (type) {
-      const bit = type & (~type + 1);
-      var value = ReturnType[bit];
-      if (!objects.includes(value)) {
-        objects.push(value);
-      }
-      type ^= bit;
-    }
-    return objects.join(',');
-  }
-
   /**
    * Returns various types of entity data.
    * Fetch data for a list of entity id's and specify what data to include.
@@ -52,8 +39,8 @@ export default class Entity {
    */
   public FetchData(fetchObjectsModel: IFetchObjectsModel): AxiosPromise<ISummaryModel[]> {
 
-    let returnType = fetchObjectsModel.objects;
-    if (typeof returnType != 'string') {
+    const returnType = fetchObjectsModel.objects;
+    if (typeof returnType !== "string") {
       fetchObjectsModel.objects = this.GetReturnType(returnType);
     }
     return this.request.getInstance().post(`entities:fetchdata`, fetchObjectsModel);
@@ -354,5 +341,20 @@ export default class Entity {
   public GetAllSegements(): AxiosPromise<ISegments[]> {
     const requestUrl = `entities/segments`;
     return this.request.getInstance().get(requestUrl);
+  }
+
+  private GetReturnType(type: ReturnType): string {
+    /* tslint:disable:no-bitwise */
+    const objects: string[] = [];
+    while (type) {
+      const bit = type & (~type + 1);
+      const value = ReturnType[bit];
+      if (!objects.includes(value)) {
+        objects.push(value);
+      }
+      type ^= bit;
+    }
+    return objects.join(",");
+    /* tslint:enable:no-bitwise */
   }
 }

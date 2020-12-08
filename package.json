@@ -1,8 +1,8 @@
 {
-  "name": "inriverjs",
+  "name": "inriverjs-geta",
   "version": "1.0.1",
-  "description": "A wrapper for the InRiver REST API",
-  "author": "Adil Khali <adil.khali@gmail.com>",
+  "description": "A wrapper for the InRiver REST API - Patch fork from github.com/adilkhali/InRiverJS",
+  "author": "Fabian Boe <fabian@getadigital.com>",
   "license": "MIT",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -14,12 +14,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/adilkhali/InRiverJS.git"
+    "url": "https://https://github.com/RabaGhast/InRiverJS.git"
   },
   "bugs": {
-    "url": "https://github.com/adilkhali/InRiverJS/issues"
+    "url": "https://https://github.com/RabaGhast/InRiverJS/issues"
   },
-  "homepage": "https://github.com/adilkhali/InRiverJS",
+  "homepage": "https://https://github.com/RabaGhast//InRiverJS",
   "keywords": [
     "inrRiver",
     "ipmc",
@@ -36,5 +36,8 @@
   },
   "files": [
     "lib/**/*"
-  ]
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
 }
