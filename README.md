@@ -15,7 +15,7 @@ A simple wrapper for the inRiver IPMC REST API.
 1. Create the context with an initial setup of a key and Endpoint  👇
 
 ```javascript
-import InRiverAPIClient from "inriverjs";
+import InRiverAPIClient from "inriverjs/lib";
 
 const inRiverApi = new InRiverAPIClient(
   "YOUR-API-KEY-HERE",
