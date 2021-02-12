@@ -4,6 +4,7 @@ export interface IConfig {
   apiRoot: string;
   apiversion: string;
   apiKey: string;
+  language?: string;
 }
 
 export interface IRequest {

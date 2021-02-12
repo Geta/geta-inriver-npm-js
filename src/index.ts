@@ -18,9 +18,10 @@ export default class InRiverAPIClient {
   constructor(
     apiKey: string,
     apiRoot: string = "https://apieuw.productmarketingcloud.com",
-    apiversion: string = "v1.0.0"
+    apiversion: string = "v1.0.0",
+    language?: string
   ) {
-    this.request = new Request(new Config(apiKey, apiRoot, apiversion));
+    this.request = new Request(new Config(apiKey, apiRoot, apiversion, language));
     this.InRiverChannel = new Channel(this.request);
     this.InRiverSyndicate = new Syndicate(this.request);
     this.InRiverQuery = new Query(this.request);

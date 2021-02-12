@@ -9,9 +9,14 @@ export default class Request implements IRequest {
   }
 
   public getInstance = (): AxiosInstance => {
+    const headers: any = { "X-inRiver-APIKey": this.config.apiKey };
+    if (this.config.language) {
+      headers["accept-language"] = this.config.language;
+    }
+
     return axios.create({
       baseURL: `${this.config.apiRoot}/api/${this.config.apiversion}/`,
-      headers: { "X-inRiver-APIKey": this.config.apiKey },
+      headers,
       responseType: "json"
     });
   }
