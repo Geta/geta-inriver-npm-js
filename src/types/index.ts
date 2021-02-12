@@ -520,3 +520,20 @@ export interface IUrlFileModel {
 export interface IExternalUrlFileModel {
   url: string;
 }
+
+export interface ICompletenessModel {
+  completeness: number;
+  groups: ICompletenessGroup[];
+
+}
+
+export interface ICompletenessGroup {
+  isCompleted: boolean;
+  name: string;
+  rules: ICompletenessRule[];
+}
+
+export interface ICompletenessRule {
+  isCompleted: boolean;
+  name: string;
+}

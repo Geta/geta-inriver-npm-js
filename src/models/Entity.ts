@@ -20,7 +20,8 @@ import {
   IBase64FileModel,
   IUrlFileModel,
   IExternalUrlFileModel,
-  ReturnType
+  ReturnType,
+  ICompletenessModel
 } from "../types";
 
 import { AxiosPromise } from "axios";
@@ -96,7 +97,7 @@ export default class Entity {
    * Returns the completeness details of an entity
    * @param entityId : The unique identifier of the entity.
    */
-  public CompletenessDetails(entityId: number): AxiosPromise<IEntityModel[]> {
+  public CompletenessDetails(entityId: number): AxiosPromise<ICompletenessModel> {
     return this.request.getInstance().get(`entities/${entityId}/completenessdetails`);
   }
 
