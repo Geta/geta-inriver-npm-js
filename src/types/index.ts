@@ -317,7 +317,7 @@ export interface IEntityCreationModel {
 
 export interface IMapUniqueValuesModel {
   fieldTypeId: string;
-  uniqueValues: [];
+  uniqueValues: string[];
 }
 
 export interface IEntityModel {
