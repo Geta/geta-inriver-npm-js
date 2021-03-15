@@ -89,8 +89,16 @@ export default class Entity {
    * Returns a dictionary of unique values and entity id's
    * @param mapUniqueValuesModel : Mapping Model.
    */
-  public MapUniqueValues(mapUniqueValuesModel: IMapUniqueValuesModel): AxiosPromise {
-    return this.request.getInstance().post(`entities:mapuniquevalues`, mapUniqueValuesModel);
+  public MapUniqueValues(mapUniqueValuesModel: IMapUniqueValuesModel): AxiosPromise<{key: string, value: string | null}[]> {
+    return Promise.resolve()
+      .then(() => this.request.getInstance().post(`entities:mapuniquevalues`, mapUniqueValuesModel))
+      .then(res => {
+        const entries =
+        Object.entries(res.data).map(([unique, id]) => { return { key: unique, value: id } })
+        res.data = entries;
+        return res;
+      })
+      .catch(err => err);
   }
 
   /**
