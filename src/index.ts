@@ -1,6 +1,7 @@
 import Config from "./config";
-import { Channel, Syndicate, Query, System, Media, Link, Workarea, Model, Entity} from "./models";
+import { Channel, Syndicate, Query, System, Media, Link, Workarea, Model, Entity, Expanded } from "./models";
 import { IRequest } from "./types";
+import InboundRequest from "./utils/inboundRequest";
 import Request from "./utils/request";
 
 export default class InRiverAPIClient {
@@ -14,12 +15,16 @@ export default class InRiverAPIClient {
   private InRiverWorkarea: Workarea;
   private InRiverModel: Model;
   private InRiverEntity: Entity;
+  private inriverExpanded?: Expanded = undefined;
+  private inboundRequest?: IRequest = undefined;
 
   constructor(
     apiKey: string,
     apiRoot: string = "https://apieuw.productmarketingcloud.com",
     apiversion: string = "v1.0.0",
-    language?: string
+    language?: string,
+    inboundUri?: string,
+    inboundKey?: string    
   ) {
     this.request = new Request(new Config(apiKey, apiRoot, apiversion, language));
     this.InRiverChannel = new Channel(this.request);
@@ -31,6 +36,11 @@ export default class InRiverAPIClient {
     this.InRiverWorkarea = new Workarea(this.request);
     this.InRiverModel = new Model(this.request);
     this.InRiverEntity = new Entity(this.request);
+    
+    if(inboundUri && inboundKey) {
+      this.inboundRequest = new InboundRequest(new Config(inboundKey, inboundUri, undefined, undefined));
+      this.inriverExpanded = new Expanded(this.inboundRequest);
+    }
   }
 
   public get Channel() {
@@ -68,5 +78,15 @@ export default class InRiverAPIClient {
 
   public get Entities() {
     return this.InRiverEntity;
+  }
+
+  public get Expanded() {
+    if(this.inboundRequest) {
+      return this.inriverExpanded!;
+    }
+    else {
+      throw 'Error! Expanded is not in use because either "inboundUri" or "inboundKey" ' 
+      + 'was not specified in the InRiverAPIClient constructor.'
+    }
   }
 }

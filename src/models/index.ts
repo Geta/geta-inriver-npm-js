@@ -7,6 +7,7 @@ import Link from "./Link";
 import Workarea from "./Workarea";
 import Model from "./Model";
 import Entity from "./Entity";
+import Expanded from "./Expanded";
 
 export {
   Channel,
@@ -17,5 +18,6 @@ export {
   Link,
   Workarea,
   Model,
-  Entity
+  Entity,
+  Expanded
 };
