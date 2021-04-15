@@ -13,15 +13,15 @@ export default class InboundRequest implements IRequest {
         if (this.config.language) {
             headers["accept-language"] = this.config.language;
         }
-        
+
         return axios.create({
+            auth: {
+                password: this.config.apiKey,
+                username: "apikey"
+            },
             baseURL: this.config.apiRoot,
             headers,
             responseType: "json",
-            auth: {
-                username: 'apikey',
-                password: this.config.apiKey
-            }
         });
     }
 }

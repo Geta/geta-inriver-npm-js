@@ -24,7 +24,7 @@ export default class InRiverAPIClient {
     apiversion: string = "v1.0.0",
     language?: string,
     inboundUri?: string,
-    inboundKey?: string    
+    inboundKey?: string
   ) {
     this.request = new Request(new Config(apiKey, apiRoot, apiversion, language));
     this.InRiverChannel = new Channel(this.request);
@@ -36,8 +36,8 @@ export default class InRiverAPIClient {
     this.InRiverWorkarea = new Workarea(this.request);
     this.InRiverModel = new Model(this.request);
     this.InRiverEntity = new Entity(this.request);
-    
-    if(inboundUri && inboundKey) {
+
+    if (inboundUri && inboundKey) {
       this.inboundRequest = new InboundRequest(new Config(inboundKey, inboundUri, undefined, undefined));
       this.inriverExpanded = new Expanded(this.inboundRequest);
     }
@@ -80,13 +80,12 @@ export default class InRiverAPIClient {
     return this.InRiverEntity;
   }
 
-  public get Expanded() {
-    if(this.inboundRequest) {
+  public get Expanded(): Expanded {
+    if (this.inriverExpanded) {
       return this.inriverExpanded!;
-    }
-    else {
-      throw 'Error! Expanded is not in use because either "inboundUri" or "inboundKey" ' 
-      + 'was not specified in the InRiverAPIClient constructor.'
+    } else {
+      throw new Error("Error! Expanded is not in use because either \"inboundUri\" or \"inboundKey\" "
+      + "was not specified in the InRiverAPIClient constructor.");
     }
   }
 }
